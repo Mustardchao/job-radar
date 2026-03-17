@@ -1,11 +1,5 @@
 # JobRadar 配置
 
-# 目标网站
-websites:
-  - zhipin      # 智联招聘
-  - 51job       # 前程无忧
-  - liepin      # 猎聘网
-
 # 搜索关键词
 keywords:
   - AI Agent
@@ -26,20 +20,21 @@ cities:
   - 广州
   - 杭州
 
-# 薪资范围 (单位：k)
-salary:
-  min: 15
-  max: 40
+# 薪资范围 (单位：k) - 顶层格式，匹配 main.py
+salary_min: 15
+salary_max: 40
+
+# 猎聘网 Cookie (可选，本地测试用)
+# GitHub 环境请使用 Secrets: LIEPIN_COOKIE
+liepin_cookie: ""
 
 # 推送设置
 push:
   enabled: true
   channel: feishu
-  webhook_url: "${{ secrets.FEISHU_WEBHOOK_URL }}"
-  schedule: "0 9 * * *"  # 每天 9:00
 
 # 去重设置
 dedup:
   enabled: true
   cache_file: jobs_cache.json
-  expire_hours: 24  # 24 小时内不重复推送
+  expire_hours: 24
