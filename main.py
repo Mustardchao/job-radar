@@ -93,7 +93,7 @@ class JobRadar:
     def crawl_zhipin(self) -> List[Dict]:
         """抓取智联招聘"""
         jobs = []
-        print("📌 抓取智联招聘...")
+        print("[INFO] Crawling zhipin.com...")
         
         # 智联招聘搜索 URL (需要根据实际调整)
         base_url = "https://sou.zhaopin.com/"
@@ -155,7 +155,7 @@ class JobRadar:
     def crawl_51job(self) -> List[Dict]:
         """抓取前程无忧"""
         jobs = []
-        print("📌 抓取前程无忧...")
+        print("[INFO] Crawling 51job.com...")
         
         # 前程无忧搜索 URL
         base_url = "https://search.51job.com/"
@@ -217,7 +217,7 @@ class JobRadar:
     def crawl_liepin(self) -> List[Dict]:
         """抓取猎聘网"""
         jobs = []
-        print("📌 抓取猎聘网...")
+        print("[INFO] Crawling liepin.com...")
         
         # 猎聘网搜索 URL
         base_url = "https://www.liepin.com/zhaopin/"
@@ -286,42 +286,42 @@ class JobRadar:
         # 保存缓存
         self.save_cache()
         
-        print(f"\n✅ 共抓取 {len(all_jobs)} 个新岗位")
+        print(f"\n[OK] Crawled {len(all_jobs)} new jobs")
         return all_jobs
     
     def format_message(self, jobs: List[Dict]) -> str:
         """格式化飞书消息"""
         if not jobs:
-            return "😴 今天没有新的匹配岗位哦~"
+            return "[INFO] No new matching jobs today~"
         
         # 按城市分组
         by_city = {}
         for job in jobs:
-            city = job['location'].split()[0] if job['location'] else '其他'
+            city = job['location'].split()[0] if job['location'] else 'Other'
             if city not in by_city:
                 by_city[city] = []
             by_city[city].append(job)
         
         # 构建消息
-        lines = [f"🔍 **JobRadar 岗位监控** - {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"]
-        lines.append(f"今日新增 **{len(jobs)}** 个匹配岗位\n")
+        lines = [f"[JobRadar] {datetime.now().strftime('%Y-%m-%d %H:%M')}"]
+        lines.append(f"New: {len(jobs)} jobs\n")
         lines.append("---\n")
         
         for city, city_jobs in sorted(by_city.items()):
-            lines.append(f"📍 **{city}** ({len(city_jobs)}个)\n")
+            lines.append(f"[{city}] ({len(city_jobs)} jobs)\n")
             
-            for i, job in enumerate(city_jobs[:5], 1):  # 每个城市最多 5 个
-                lines.append(f"{i}. **{job['title']}**")
-                lines.append(f"   💰 {job['salary']} | 🏢 {job['company']}")
-                lines.append(f"   🔗 {job['url']}\n")
+            for i, job in enumerate(city_jobs[:5], 1):
+                lines.append(f"{i}. {job['title']}")
+                lines.append(f"   Salary: {job['salary']} | Company: {job['company']}")
+                lines.append(f"   Link: {job['url']}\n")
             
             if len(city_jobs) > 5:
-                lines.append(f"   ... 还有 {len(city_jobs) - 5} 个岗位\n")
+                lines.append(f"   ... +{len(city_jobs) - 5} more jobs\n")
             
             lines.append("\n")
         
         lines.append("---\n")
-        lines.append(f"数据来源：智联招聘 | 前程无忧 | 猎聘网")
+        lines.append(f"Source: zhipin.com | 51job.com | liepin.com")
         
         return "\n".join(lines)
 
@@ -331,13 +331,12 @@ def main():
     jobs = radar.crawl_all()
     
     if jobs:
-        # 发送飞书消息
         from send_feishu import send_to_feishu
         message = radar.format_message(jobs)
         send_to_feishu(message)
-        print("📤 消息已发送")
+        print("[OK] Message sent")
     else:
-        print("😴 没有新岗位")
+        print("[INFO] No new jobs")
 
 
 if __name__ == "__main__":
