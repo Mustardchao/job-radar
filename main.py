@@ -409,11 +409,11 @@ def main():
     else:
         print('⚠️  猎聘网 Cookie 未配置，可能无法获取数据')
     
-    # 获取飞书 Webhook
+    # 获取飞书 Webhook（内置默认值）
     webhook_url = os.environ.get('FEISHU_WEBHOOK_URL', '')
     if not webhook_url:
-        print('❌ 飞书 Webhook 未配置')
-        return
+        webhook_url = 'https://open.feishu.cn/open-apis/bot/v2/hook/c93b8faf-4f7e-4b27-8bfb-4c693febe244'
+        print('ℹ️ 使用内置飞书 Webhook')
     
     # 开始爬取
     crawler = JobCrawler(config)
