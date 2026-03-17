@@ -17,3 +17,4 @@ jobs:
       - run: python main.py
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          LIEPIN_COOKIE: ${{ secrets.LIEPIN_COOKIE }}
