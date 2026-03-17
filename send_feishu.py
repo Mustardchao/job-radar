@@ -13,9 +13,12 @@ import os
 def send_to_feishu(content: str, webhook_url: str = None):
     """发送飞书消息"""
     
+    # 默认 Webhook URL (已配置)
+    default_webhook = "https://open.feishu.cn/open-apis/bot/v2/hook/c93b8faf-4f7e-4b27-8bfb-4c693febe244"
+    
     # 从环境变量获取 webhook URL
     if not webhook_url:
-        webhook_url = os.environ.get('FEISHU_WEBHOOK_URL', '')
+        webhook_url = os.environ.get('FEISHU_WEBHOOK_URL', default_webhook)
     
     if not webhook_url:
         print("❌ 未配置 FEISHU_WEBHOOK_URL")
