@@ -1,0 +1,45 @@
+# JobRadar 配置
+
+# 目标网站
+websites:
+  - zhipin      # 智联招聘
+  - 51job       # 前程无忧
+  - liepin      # 猎聘网
+
+# 搜索关键词
+keywords:
+  - AI Agent
+  - Python
+  - 大模型
+  - AI
+  - 人工智能
+  - LLM
+  - Agent
+  - 自动化
+  - 爬虫
+
+# 目标城市
+cities:
+  - 北京
+  - 上海
+  - 深圳
+  - 广州
+  - 杭州
+
+# 薪资范围 (单位：k)
+salary:
+  min: 15
+  max: 40
+
+# 推送设置
+push:
+  enabled: true
+  channel: feishu
+  webhook_url: "${{ secrets.FEISHU_WEBHOOK_URL }}"
+  schedule: "0 9 * * *"  # 每天 9:00
+
+# 去重设置
+dedup:
+  enabled: true
+  cache_file: jobs_cache.json
+  expire_hours: 24  # 24 小时内不重复推送
