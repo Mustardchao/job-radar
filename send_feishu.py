@@ -21,7 +21,7 @@ def send_to_feishu(content: str, webhook_url: str = None):
         webhook_url = os.environ.get('FEISHU_WEBHOOK_URL', default_webhook)
     
     if not webhook_url:
-        print("❌ 未配置 FEISHU_WEBHOOK_URL")
+        print("[ERROR] FEISHU_WEBHOOK_URL not configured")
         return
     
     # 构建卡片消息
@@ -69,15 +69,15 @@ def send_to_feishu(content: str, webhook_url: str = None):
         if response.status_code == 200:
             result = response.json()
             if result.get('StatusCode') == 0 or result.get('code') == 0:
-                print("✅ 飞书消息发送成功")
+                print("[OK] Message sent successfully")
             else:
-                print(f"❌ 飞书消息发送失败：{result}")
+                print(f"[ERROR] Send failed: {result}")
         else:
-            print(f"❌ HTTP 错误：{response.status_code}")
+            print(f"[ERROR] HTTP error: {response.status_code}")
             print(response.text)
             
     except Exception as e:
-        print(f"❌ 发送异常：{e}")
+        print(f"[ERROR] Exception: {e}")
 
 
 if __name__ == "__main__":
